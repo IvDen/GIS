@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: discovery
+  cloud:
+    config:
+      uri: http://configurator:8888
+      fail-fast: true
+      password: changeMe
+      username: user
+
+#eureka:
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
+#    server:
+#      waitTimeInMsWhenSyncEmpty: 0

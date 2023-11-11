@@ -1,0 +1,10 @@
+server:
+  port: 8080
+#  use-forward-headers: true
+  forward-headers-strategy: framework
+
+springdoc:
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+  api-docs:
+    path: /openapi/v3/api-docs

@@ -1,0 +1,105 @@
+services:
+  db-postgres:
+    image: postgres:16.0-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    volumes:
+      - vol-db-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: render-be
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/secret-db-postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${DB_PORT}:5432"
+    secrets:
+      - secret-db-postgres
+
+  configurator:
+    build:
+      context: configurator
+    image: gis/configurator
+    healthcheck:
+      #        TODO swap to Actuator endpoint?
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    #        args:
+    #          SERVICE_PASSWORD: /run/secrets/sec-configurator
+    #          SERVICE_PORT: /run/secrets/sec-port
+    #          SERVICE_PASSWORD: qqqq
+
+    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker,native" ]
+#    command: [ "java", "-jar", "application.jar"]
+#    environment:
+      #TODO naming
+#      SERVICE_PASSWORD_FILE: /run/secrets/secret-configurator-pwd
+    mem_limit: 512m
+#    ports:
+#      - "8880:8888"
+    secrets:
+      - secret-configurator-pwd
+
+  discovery:
+    build:
+      context: discovery
+    image: gis/discovery
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      #should i override hostname for server?
+    #    command: [ "java", "-jar", "application.jar", "--eureka.instance.hostname=discovery" ]
+    command: [ "java", "-jar", "application.jar" ]
+    mem_limit: 512m
+    depends_on:
+      configurator:
+        condition: service_healthy
+#    ports:
+#      - "8881:8761"
+
+  gateway:
+    build:
+      context: gateway
+    image: gis/gateway
+    command: [ "java", "-jar", "application.jar" ]
+    mem_limit: 512m
+    depends_on:
+      configurator:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+    ports:
+      - "8090:8080"
+
+  render-be:
+    build:
+      context: render-be
+    image: gis/render-be
+    command: [ "java", "-jar", "application.jar" ]
+    mem_limit: 512m
+    depends_on:
+      configurator:
+        condition: service_healthy
+      discovery:
+        condition: service_healthy
+      db-postgres:
+        condition: service_healthy
+#    ports:
+#      - "8890:8080"
+#      - "8080"
+
+secrets:
+  secret-db-postgres:
+    file: ./secrets/db-postgres/root_pass
+  secret-configurator-pwd:
+    file: ./secrets/configurator/service_pass
+
+volumes:
+  vol-db-postgres:

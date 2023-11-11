@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: render-be-route
+          uri: lb://render-be
+#          uri: http://render-be:8080
+          predicates:
+#            - Path=/gis/render-be/**
+            - Path=/gis/render-be/v1/stub
+
+        - id: render-be-open-api-route
+          uri: lb://render-be
+#          uri: http://render-be:8080
+          predicates:
+#            - Path=/swagger-ui/index.html
+            - Path=/openapi/**
+#TODO delete it
+#        - id: discovery-api
+#          uri: http://discovery:8761
+#          predicates:
+#            - Path=/eureka/**
+#          filters:
+#            - SetPath=/
+
+        - id: discovery-web-start
+          uri: http://discovery:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+
+        - id: discovery-web-other
+          uri: http://discovery:8761
+          predicates:
+            - Path=/eureka/**
