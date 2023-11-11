@@ -56,7 +56,7 @@ services:
       retries: 5
       #should i override hostname for server?
     #    command: [ "java", "-jar", "application.jar", "--eureka.instance.hostname=discovery" ]
-    command: [ "java", "-jar", "application.jar" ]
+    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     mem_limit: 512m
     depends_on:
       configurator:
@@ -68,7 +68,7 @@ services:
     build:
       context: gateway
     image: gis/gateway
-    command: [ "java", "-jar", "application.jar" ]
+    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     mem_limit: 512m
     depends_on:
       configurator:
@@ -82,7 +82,7 @@ services:
     build:
       context: render-be
     image: gis/render-be
-    command: [ "java", "-jar", "application.jar" ]
+    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     mem_limit: 512m
     depends_on:
       configurator:
