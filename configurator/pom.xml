@@ -38,9 +38,6 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
           <execution>
-<!--            <goals>-->
-<!--              <goal>repackage</goal>-->
-<!--            </goals>-->
             <configuration>
               <mainClass>org.gis.configurator.ConfiguratorApplication</mainClass>
             </configuration>

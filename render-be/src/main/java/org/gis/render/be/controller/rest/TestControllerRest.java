@@ -6,9 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +20,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/gis/render-be/v1/")
 public class TestControllerRest {
-    private  static UUID id = UUID.randomUUID();
+
+    private static UUID id = UUID.randomUUID();
+
     @Operation(
         summary = "Stub",
         description = "Stub"
