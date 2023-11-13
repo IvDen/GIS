@@ -23,5 +23,5 @@ spring:
   datasource:
     url: "jdbc:postgresql://db-postgres:5432/render-be"
 #    TODO inject from env var
-#    password: postgres
-    password: ${secret-db-postgres}
+    password: postgres
+#    password: ${secret-db-postgres}

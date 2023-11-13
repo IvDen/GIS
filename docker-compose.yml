@@ -6,7 +6,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: unless-stopped
+    restart: "on-failure: 5"
+#    read_only: true
     volumes:
       - vol-db-postgres:/var/lib/postgresql/data
     environment:
@@ -28,6 +29,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: "on-failure: 5"
+#    read_only: true
     command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker,native" ]
     mem_limit: 512m
     secrets:
@@ -42,6 +45,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: "on-failure: 5"
+#    read_only: true
     command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     mem_limit: 512m
     depends_on:
@@ -53,6 +58,13 @@ services:
       context: gateway
     image: gis/gateway
     command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "https://localhost:8443/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: "on-failure: 5"
+#    read_only: true
     mem_limit: 512m
     depends_on:
       configurator:
@@ -70,6 +82,13 @@ services:
       context: render-be
     image: gis/render-be
     command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: "on-failure: 5"
+#    read_only: true
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/secret-db-postgres
     mem_limit: 512m
