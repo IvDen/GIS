@@ -2,27 +2,22 @@ logging:
   level:
     root: INFO
 
-server:
-  port: @serverPort@
+server.port: @serverPort@
 
 spring:
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: classpath:/shared
-  profiles:
-    active: native
-  security:
-    user:
-      password: @servicePassword@
+  cloud.config.server.native.search-locations: classpath:/shared
+  profiles.active: native
+  security.user.password: @servicePassword@
 
 ---
 spring:
   config:
-    activate:
-      on-profile: "docker"
+    activate.on-profile: "docker"
     import: "optional:configtree:/run/secrets/"
-  security:
-    user:
-      password: ${secret-configurator-pwd}
+#  cloud.config.server.git:
+#    basedir: classpath:/shared
+#    uri: https://github.com/IvDen/GIS-config.git
+#    default-label: main
+#    skipSslValidation: true
+#    timeout: 10
+  security.user.password: ${secret-configurator-pwd}
