@@ -1,0 +1,24 @@
+logging:
+  level:
+    root: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: false
+    fetchRegistry: false
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+    hostname: discovery
+    serviceUrl:
+      #      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+server:
+  port: 8761
+
+

@@ -1,0 +1,17 @@
+logging:
+  level:
+    root: INFO
+
+server.port: @serverPort@
+
+spring:
+  cloud.config.server.native.search-locations: classpath:/shared
+  profiles.active: native
+  security.user.password: @servicePassword@
+
+---
+spring:
+  config:
+    activate.on-profile: "docker"
+    import: "optional:configtree:/run/secrets/"
+  security.user.password: ${secret-configurator-pwd}

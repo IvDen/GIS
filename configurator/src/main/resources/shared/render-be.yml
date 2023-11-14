@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+spring.datasource:
+  url: "jdbc:postgresql://localhost:5432/render-be"
+  username: postgres
+  password: postgres
+  driver-class-name: org.postgresql.Driver
+
+springdoc:
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+  api-docs:
+    path: /openapi/v3/api-docs
+
+---
+spring:
+  config:
+    activate.on-profile: "docker"
+  datasource:
+    url: "jdbc:postgresql://db-postgres:5432/render-be"
+    password: ${secret-db-postgres}

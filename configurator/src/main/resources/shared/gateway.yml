@@ -1,0 +1,51 @@
+server:
+  port: 8443
+
+logging:
+  level:
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: render-be-route
+          uri: lb://render-be
+          predicates:
+            - Path=/gis/render-be/v1/render-objects/3857/
+
+        - id: render-be-open-api-route
+          uri: lb://render-be
+          predicates:
+            - Path=/openapi/**
+
+        - id: discovery-web-start
+          uri: http://discovery:8761
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+
+        - id: discovery-web-other
+          uri: http://discovery:8761
+          predicates:
+            - Path=/eureka/**
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "docker"
+
+server.ssl:
+  enabled: true
+  key-store-type: PKCS12
+  key-store: file:/run/secrets/secret-gateway-cert
+  key-store-password: ${secret-gateway-ca-pass}
+  key-alias: gateway

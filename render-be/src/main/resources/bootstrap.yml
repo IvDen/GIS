@@ -1,0 +1,16 @@
+spring:
+  application.name: render-be
+  cloud:
+    config:
+      uri: http://localhost:8888
+      password: changeMe
+      username: user
+
+---
+spring:
+  config:
+    activate.on-profile: docker
+    import: "optional:configtree:/run/secrets/"
+  cloud.config:
+    uri: http://configurator:8888
+    password: ${secret-configurator-pwd}
