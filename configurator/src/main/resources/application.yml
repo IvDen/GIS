@@ -14,10 +14,4 @@ spring:
   config:
     activate.on-profile: "docker"
     import: "optional:configtree:/run/secrets/"
-#  cloud.config.server.git:
-#    basedir: classpath:/shared
-#    uri: https://github.com/IvDen/GIS-config.git
-#    default-label: main
-#    skipSslValidation: true
-#    timeout: 10
   security.user.password: ${secret-configurator-pwd}

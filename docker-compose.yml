@@ -7,10 +7,8 @@ services:
       timeout: 5s
       retries: 5
     restart: "on-failure: 5"
-#    command: [ "postgres", "-c", "config_file=/etc/postgresql.conf" ]
     volumes:
       - vol-db-postgres:/var/lib/postgresql/data
-#      - ./db/postgresql.conf:/etc/postgresql.conf
     environment:
       POSTGRES_DB: render-be
       POSTGRES_USER: postgres
@@ -32,7 +30,6 @@ services:
       retries: 5
     restart: "on-failure: 5"
     command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker,native" ]
-#    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     mem_limit: 512m
     secrets:
       - secret-configurator-pwd
@@ -52,6 +49,8 @@ services:
     depends_on:
       configurator:
         condition: service_healthy
+    secrets:
+      - secret-configurator-pwd
 
   gateway:
     build:
@@ -73,6 +72,7 @@ services:
     secrets:
       - secret-gateway-cert
       - secret-gateway-ca-pass
+      - secret-configurator-pwd
     ports:
       - "8443:8443"
 
@@ -86,9 +86,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: "on-failure: 5"
-    environment:
-      POSTGRES_PASSWORD_FILE: /run/secrets/secret-db-postgres
+#    restart: "on-failure: 5"
     mem_limit: 512m
     depends_on:
       configurator:
@@ -99,6 +97,7 @@ services:
         condition: service_healthy
     secrets:
       - secret-db-postgres
+      - secret-configurator-pwd
 
 secrets:
   secret-db-postgres:

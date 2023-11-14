@@ -17,16 +17,12 @@ spring:
       routes:
         - id: render-be-route
           uri: lb://render-be
-          #          uri: http://render-be:8080
           predicates:
-            #            - Path=/gis/render-be/**
             - Path=/gis/render-be/v1/stub
 
         - id: render-be-open-api-route
           uri: lb://render-be
-          #          uri: http://render-be:8080
           predicates:
-            #            - Path=/swagger-ui/index.html
             - Path=/openapi/**
 
         - id: discovery-web-start
@@ -46,13 +42,10 @@ spring:
   config:
     activate:
       on-profile: "docker"
-    import: "optional:configtree:/run/secrets/"
 
 server.ssl:
   enabled: true
   key-store-type: PKCS12
   key-store: file:/run/secrets/secret-gateway-cert
-  #  TODO bug? https://stackoverflow.com/questions/72412346/java-keytool-importing-pkcs12-to-jks-getting-error-keystore-password-was-inc
-  #  key-store-password: ${secret-gateway-ca-pass}
-  key-store-password: password
+  key-store-password: ${secret-gateway-ca-pass}
   key-alias: gateway

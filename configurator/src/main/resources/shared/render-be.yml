@@ -3,7 +3,7 @@ server:
   forward-headers-strategy: framework
 
 spring.datasource:
-  url: jdbc:postgresql://localhost:5432/render-be
+  url: "jdbc:postgresql://localhost:5432/render-be"
   username: postgres
   password: postgres
   driver-class-name: org.postgresql.Driver
@@ -17,11 +17,7 @@ springdoc:
 ---
 spring:
   config:
-    activate:
-      on-profile: "docker"
-    import: "optional:configtree:/run/secrets/"
+    activate.on-profile: "docker"
   datasource:
     url: "jdbc:postgresql://db-postgres:5432/render-be"
-#    TODO inject from env var
-    password: postgres
-#    password: ${secret-db-postgres}
+    password: ${secret-db-postgres}

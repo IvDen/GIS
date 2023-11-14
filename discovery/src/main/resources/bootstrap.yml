@@ -8,5 +8,9 @@ spring:
 
 ---
 spring:
-  config.activate.on-profile: docker
-  cloud.config.uri: http://configurator:8888
+  config:
+    activate.on-profile: docker
+    import: "optional:configtree:/run/secrets/"
+  cloud.config:
+    uri: http://configurator:8888
+    password: ${secret-configurator-pwd}
