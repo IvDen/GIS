@@ -28,6 +28,7 @@ public class ObjectToRender implements Serializable {
     @Column
     private UUID id;
 
+    //todo mapping for geo
     private Rectangle2D.Double rectangle;
 
 }

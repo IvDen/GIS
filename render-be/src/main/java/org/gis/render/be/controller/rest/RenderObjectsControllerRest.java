@@ -1,9 +1,7 @@
 package org.gis.render.be.controller.rest;
 
 import org.gis.render.be.dto.BBoxDto;
-import org.gis.render.be.dto.ImageDto;
 import org.gis.render.be.service.BaseRenderObjectsService;
-import org.gis.render.be.service.impl.RenderObjectsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,8 @@ public class RenderObjectsControllerRest {
     private final BaseRenderObjectsService<Integer, BBoxDto, ByteArrayResource> renderObjectsServiceImpl;
 
     @Autowired
-    public RenderObjectsControllerRest(BaseRenderObjectsService<Integer, BBoxDto, ByteArrayResource> renderObjectsService) {
+    public RenderObjectsControllerRest(
+        BaseRenderObjectsService<Integer, BBoxDto, ByteArrayResource> renderObjectsService) {
         this.renderObjectsServiceImpl = renderObjectsService;
     }
 
@@ -53,7 +52,8 @@ public class RenderObjectsControllerRest {
     public ResponseEntity<ByteArrayResource> stub(@RequestParam @Size(min = 1, max = 1080) int width,
                                                   @RequestParam @Size(min = 1, max = 1080) int height,
                                                   @Valid BBoxDto bBox) {
-        ByteArrayResource temp = renderObjectsServiceImpl.renderObject(width, height, bBox);
-        return new ResponseEntity<>(new ByteArrayResource(id.toString().getBytes()), HttpStatus.OK);
+        return new ResponseEntity<>(
+            new ByteArrayResource(renderObjectsServiceImpl.renderObject(width, height, bBox).getByteArray()),
+            HttpStatus.OK);
     }
 }
