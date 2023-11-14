@@ -18,7 +18,7 @@ spring:
         - id: render-be-route
           uri: lb://render-be
           predicates:
-            - Path=/gis/render-be/v1/stub
+            - Path=/gis/render-be/v1/render-objects/3857/
 
         - id: render-be-open-api-route
           uri: lb://render-be

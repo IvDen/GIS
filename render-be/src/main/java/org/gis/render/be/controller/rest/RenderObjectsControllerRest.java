@@ -19,7 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 /**
  * @author Denis I.
@@ -49,11 +50,7 @@ public class RenderObjectsControllerRest {
     }
     )
     @GetMapping(value = "/render-objects/3857/", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<ByteArrayResource> stub(@RequestParam @Size(min = 1, max = 1080) int width,
-                                                  @RequestParam @Size(min = 1, max = 1080) int height,
-                                                  @Valid BBoxDto bBox) {
-        return new ResponseEntity<>(
-            new ByteArrayResource(renderObjectsServiceImpl.renderObject(width, height, bBox).getByteArray()),
-            HttpStatus.OK);
+    public ResponseEntity<byte[]> getRenderedObjects() {
+        return new ResponseEntity<>(id.toString().getBytes(), HttpStatus.OK);
     }
 }

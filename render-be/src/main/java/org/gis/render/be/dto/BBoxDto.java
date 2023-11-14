@@ -16,9 +16,9 @@ public class BBoxDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 5995618206957197835L;
 //TODO validate relation between min and max
-    @NotNull
+//    @NotNull
     private Point2D.Double topLeftEpsg3857;
 
-    @NotNull
+//    @NotNull
     private Point2D.Double bottomRightEpsg3857;
 }

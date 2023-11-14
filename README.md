@@ -1,6 +1,7 @@
 # GIS
 WORK IN PROGRESS
 
+How to run:
 1. put you secrets files to these directories
    * `gis/secrets/`
      * `configurator`
