@@ -80,7 +80,8 @@ services:
     build:
       context: render-be
     image: gis/render-be
-    command: [ "java", "-jar", "application.jar", "--spring.profiles.active=docker" ]
+#    todo delete 8000
+    command: [ "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000", "-jar", "application.jar", "--spring.profiles.active=docker" ]
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 5s
@@ -98,6 +99,9 @@ services:
     secrets:
       - secret-db-postgres
       - secret-configurator-pwd
+    #    todo delete 8000
+    ports:
+      - "8000:8000"
 
 secrets:
   secret-db-postgres:

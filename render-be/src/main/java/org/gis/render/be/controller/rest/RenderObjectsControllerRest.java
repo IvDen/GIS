@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Denis I.
@@ -49,8 +50,8 @@ public class RenderObjectsControllerRest {
         @ApiResponse(responseCode = "200", description = "Stub")
     }
     )
-    @GetMapping(value = "/render-objects/3857/", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getRenderedObjects() {
-        return new ResponseEntity<>(id.toString().getBytes(), HttpStatus.OK);
+    @GetMapping(value = "/render-objects/3857/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<String>> getRenderedObjects() {
+        return Mono.just(new ResponseEntity<>(id.toString(), HttpStatus.OK)).log();
     }
 }
