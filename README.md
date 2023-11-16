@@ -1,9 +1,8 @@
 # GIS
 **WORK IN PROGRESS**
-**Reactor**
 
 **How to run**:
-1. put you secrets files to these directories
+1. put your secret files to these directories
    * `gis/secrets/`
      * `configurator`
        * `service_pass` //file with password for configurator
